@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 class NaiveBayes:
     def __init__(self, train, test, n_folds) -> None:
@@ -54,11 +55,43 @@ class NaiveBayes:
         result = correct / float(len(actual)) * 100.0
         return result
 
-    def fit(self):
+    def fit(self, laplace_corr=False, lambda_val=1):
         folds = self.cross_validation_split(self.train, self.n_folds)
         global_scores = -1
         optimal_summary = None
         scores = list()
+
+        if(laplace_corr):
+            predictions = []
+            prior_prob = []
+
+            max_val = -1
+            for col in self.train.columns:
+                max_val = max(max_val, self.train[col].max())
+
+            grouped = self.train.groupby('Segmentation')
+
+            K_value = len(grouped)
+            col_size = len(self.train.axes[1])
+
+
+            post_prob = np.zeros((col_size, int(max_val) + 1, K_value), dtype=np.float64)
+            prior_prob = []
+
+            grp_int = 0
+            for name, grp in grouped:
+                col_int = 0
+                prior_prob.append((len(grp) + lambda_val) / (float(len(self.train)) + K_value*lambda_val))
+                for col in grp.columns[:-1]:
+                    minima = grp[col].min()
+                    maxima = grp[col].max()
+                    for i in range(int(minima), int(maxima) + 1):
+                        post_prob[col_int][i][grp_int] = (len(grp[grp[col] == i]) + lambda_val) / (float(len(grp)) + (maxima + 1 - minima) * lambda_val)
+                    col_int += 1
+                grp_int += 1
+
+            return prior_prob, post_prob
+
         for fold in folds:
             train_set = self.train
             train_set.drop(fold.index)
@@ -101,5 +134,27 @@ class NaiveBayes:
 
             predictions.append(best_label)
         actual = test_set['Segmentation'].values.tolist()
+        accuracy = self.accuracy_metric(actual, predictions)
+        return accuracy
+
+    def get_test_accuracy_laplacian(self, prior, post):
+        predictions = []
+
+        for i, row in self.test.iterrows():
+            best_label, best_prob = None, -1
+            grp_int = 0
+            for p in prior:
+                col_int = 0
+                for name, value in row.iteritems():
+                    if(name != 'Segmentation'): p *= post[col_int][int(value)][grp_int]
+                    col_int += 1
+
+                if best_label is None or p > best_prob:
+                    best_prob = p
+                    best_label = grp_int
+                grp_int += 1
+
+            predictions.append(best_label)
+        actual = self.test['Segmentation'].values.tolist()
         accuracy = self.accuracy_metric(actual, predictions)
         return accuracy
