@@ -64,7 +64,7 @@ def main():
         accuracy_list.append(accuracy)
 
     plt.xlim(0, 0.15)
-    plt.ylim(0.75, 1)
+    plt.ylim(0.75, 1.01)
     plt.xlabel("Learning rate")
     plt.ylabel("Accuracy")
     plt.plot(learning_rate_list, accuracy_list, '-ok')
