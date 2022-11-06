@@ -65,8 +65,9 @@ def main():
 
     plt.xlim(0, 0.15)
     plt.ylim(0.75, 1)
+    plt.xlabel("Learning rate")
+    plt.ylabel("Accuracy")
     plt.plot(learning_rate_list, accuracy_list, '-ok')
-    point_data = [[learning_rate_list[i], accuracy_list[i]] for i in range(len(accuracy_list))]
 
     plt.savefig("learning_rate_vs_accuracy.png", format="png")
     plt.show()
