@@ -20,13 +20,17 @@ class BinarySVM:
         self.__model.fit(self.xTrain, self.yTrain)
     
     def getPredict(self, xTest):
-        if(self.__model == None): print("Train the model first")
+        if(self.__model == None): 
+            print("Train the model first")
+            return
 
         self.yTest = self.__model.predict(xTest)
         return self.yTest
 
     def accuracy(self, yTestTrue):
-        if(self.__model == None): print("Train the model first")
+        if(self.__model == None): 
+            print("Train the model first")
+            return
 
         return np.mean(yTestTrue == self.yTest)
 
@@ -48,13 +52,17 @@ class MLP:
         self.__model.fit(self.xTrain, self.yTrain)
 
     def getPredict(self, xTest):
-        if(self.__model == None): print("Train the model first")
+        if(self.__model == None): 
+            print("Train the model first")
+            return
 
         self.yTest = self.__model.predict(xTest)
         return self.yTest
     
     def accuracy(self, yTestTrue):
-        if(self.__model == None): print("Train the model first")
+        if(self.__model == None): 
+            print("Train the model first")
+            return
 
         return np.mean(yTestTrue == self.yTest)
 
