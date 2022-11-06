@@ -29,7 +29,9 @@ class BinarySVM:
         if(self.__model == None): print("Train the model first")
 
         return np.mean(yTestTrue == self.yTest)
-    
+
+    def error(self, yTestTrue):
+        return np.mean(yTestTrue != self.yTest)
 class MLP:
     def __init__(self, hidden_layer_sizes, xTrain, yTrain, learning_rate=1e-3, solver='sgd', batch_size=32) -> None:
         self.hidden_layer_sizes = hidden_layer_sizes
@@ -42,7 +44,7 @@ class MLP:
         self.__model = None
 
     def fitModel(self):
-        self.__model = MLPClassifier(hidden_layer_sizes=self.hidden_layer_sizes, learning_rate_init=self.learning_rate, solver=self.solver, batch_size=self.batch_size, max_iter=500)
+        self.__model = MLPClassifier(hidden_layer_sizes=self.hidden_layer_sizes, learning_rate_init=self.learning_rate, solver=self.solver, batch_size=self.batch_size, max_iter=2000, random_state=1)
         self.__model.fit(self.xTrain, self.yTrain)
 
     def getPredict(self, xTest):
@@ -55,3 +57,6 @@ class MLP:
         if(self.__model == None): print("Train the model first")
 
         return np.mean(yTestTrue == self.yTest)
+
+    def error(self, yTestTrue):
+        return np.mean(yTestTrue != self.yTest)
