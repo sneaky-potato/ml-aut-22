@@ -52,7 +52,7 @@ def normalize(xTrain, xTest):
     return xTrainScaled, xTestScaled
 
 def forward_feature_selection(model, xTest, yTestTrue):
-    base_err = model.error(yTestTrue)
+    base_err = 1e5
     features = []
     features_sample = [*range(0, len(model.xTrain[0]))]
 
@@ -79,7 +79,10 @@ def forward_feature_selection(model, xTest, yTestTrue):
                 best_e = e
                 best_feature = i
 
-        if(best_e >= base_err): best_feature = None 
+        if(best_e < base_err): 
+            base_err = best_e
+        else:
+            best_feature = None 
 
         print("best feature found =>", best_feature)
         if(best_feature is None): break
@@ -87,4 +90,5 @@ def forward_feature_selection(model, xTest, yTestTrue):
         features.append(best_feature)
         features_sample.remove(best_feature)
 
+    print("Final accuracy after forward feature selection ->", 1 - best_e)
     return features
