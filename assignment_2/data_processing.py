@@ -4,7 +4,7 @@ from Models import MLP
 
 def read_data():
     cols_list = [
-        'wine',
+        'Target Class',
         'alcohol',
         'malic acid',
         'ash',
@@ -21,11 +21,10 @@ def read_data():
     ]
 
     df = pd.read_csv('wine.data', sep=',', header=None, names=cols_list)
+    
+    return df
 
-    x = df.iloc[:, 1:].to_numpy()
-    y = df.iloc[:, 0].to_numpy()
-    return x, y
-
+# Splitting dataset into train and test set
 def trainTestSplit(x, y, testRatio=0.2, shuffle=True):
 
     if shuffle:
@@ -42,6 +41,7 @@ def trainTestSplit(x, y, testRatio=0.2, shuffle=True):
 
     return xTrainSet, xTestSet, yTrainSet, yTestSet
 
+# Standard Scalar Normalization
 def normalize(xTrain, xTest):
 
     xTrainMean = np.mean(xTrain, axis=0)
@@ -51,6 +51,7 @@ def normalize(xTrain, xTest):
 
     return xTrainScaled, xTestScaled
 
+# Funciton for returning set of best features from forward feature selection
 def forward_feature_selection(model, xTest, yTestTrue):
     base_err = 1e5
     features = []
@@ -64,11 +65,12 @@ def forward_feature_selection(model, xTest, yTestTrue):
             xTrainTemp = model.xTrain[:, [i]]
             xTestTemp = xTest[:, [i]]
 
+            # Get F union x_i features
             for j in features:
                 xTrainTemp = np.concatenate([xTrainTemp, model.xTrain[:, [j]]], axis=1)
                 xTestTemp = np.concatenate([xTestTemp, xTest[:, [j]]], axis=1)
                 
-
+            # Training the model against current features
             mlp = MLP(model.hidden_layer_sizes, xTrainTemp, model.yTrain, model.learning_rate)
             mlp.fitModel()
             mlp.getPredict(xTestTemp)
@@ -82,12 +84,18 @@ def forward_feature_selection(model, xTest, yTestTrue):
         if(best_e < base_err): 
             base_err = best_e
         else:
+            # In case of no better error feature is found
             best_feature = None 
 
         print("best feature found =>", best_feature)
+
+        # Termination condition
         if(best_feature is None): break
 
+        # Adding current best feature to final list
         features.append(best_feature)
+
+        # Removing the feature from original list
         features_sample.remove(best_feature)
 
     print("Final accuracy after forward feature selection ->", 1 - best_e)
