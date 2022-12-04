@@ -1,0 +1,18 @@
+Cumulative Variance based on number of components :  [0.36198848 0.55406338 0.66529969 0.73598999 0.80162293 0.85098116
+ 0.89336795 0.92017544 0.94239698 0.96169717]
+For k = 2:
+Terminating at 7th iteration, Loss = 2.845640677576024, NMI = 0.48377083801484533
+For k = 3:
+Terminating at 5th iteration, Loss = 2.433605665916652, NMI = 0.8758935341223072
+For k = 4:
+Terminating at 13th iteration, Loss = 2.348915948194852, NMI = 0.8149882724696906
+For k = 5:
+Terminating at 13th iteration, Loss = 2.300927577346611, NMI = 0.7048944038125848
+For k = 6:
+Terminating at 5th iteration, Loss = 2.2545158612253395, NMI = 0.6952102049431113
+For k = 7:
+Terminating at 5th iteration, Loss = 2.19313594815965, NMI = 0.6880809598163958
+For k = 8:
+Terminating at 7th iteration, Loss = 2.14622098210466, NMI = 0.6505359639334846
+3  :is value of K for which NMI is Maximum
+NMI List with K from [2-8] :  [0.48377083801484533, 0.8758935341223072, 0.8149882724696906, 0.7048944038125848, 0.6952102049431113, 0.6880809598163958, 0.6505359639334846]

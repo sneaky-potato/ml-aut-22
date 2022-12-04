@@ -1,0 +1,35 @@
+Number of instances in training set => 142, and in testing set => 36
+Feature array shape => (142, 13)
+Label array shape => (142,)
+Labels in dataset => [1 2 3]
+
+Model scores:
+
+Support Vector Machine
+::linear SVM accuracy:: => 0.9444444444444444
+::poly SVM accuracy:: => 0.8333333333333334
+::rbf SVM accuracy:: => 0.5833333333333334
+Best accuracy recorded => linear SVM
+
+Multilayer Perceptron
+::(16,) MLP accuracy:: => 0.9722222222222222
+::(256, 16) MLP accuracy:: => 0.9722222222222222
+Best accuracy recorded => (16,) MLP
+
+MLP with different learning rates
+::MLP with learning rate 0.1 accuracy:: => 0.9722222222222222
+::MLP with learning rate 0.01 accuracy:: => 0.9722222222222222
+::MLP with learning rate 0.001 accuracy:: => 0.9722222222222222
+::MLP with learning rate 0.0001 accuracy:: => 0.9444444444444444
+::MLP with learning rate 1e-05 accuracy:: => 0.8611111111111112
+
+::Running forward feature selection algorithm::
+best feature found => 1
+best feature found => 12
+best feature found => 6
+best feature found => 10
+best feature found => None
+Final accuracy after forward feature selection -> 1.0
+Set of features (indices of features) after forward feature selection -> [1, 12, 6, 10]
+
+Accuracy after ensembling max voting = 0.9444444444444444
